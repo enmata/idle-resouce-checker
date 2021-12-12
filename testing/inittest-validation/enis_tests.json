@@ -1,0 +1,121 @@
+{
+	"ToRun": [
+		{
+			"testID": "[ ENIs 1.1 EMPTY DB ]",
+			"path": "/enis-get",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 200,
+			"failing_message": "Initial GET enis-get from clean status not working",
+			"validation_type": "null"
+		},
+		{
+			"testID": "[ ENIs 1.2 SCAN ENIs ]",
+			"path": "/enis-scan",
+			"method": "GET",
+			"expected_response": "ENIs scanned",
+			"expected_responsecode": 200,
+			"failing_message": "Initial GET scan from clean status not working",
+			"validation_type": "string"
+		},
+		{
+			"testID": "[ ENIs 1.3 DETECTING MULTIPLE ENIs ]",
+			"path": "/enis-get",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 200,
+			"failing_message": "Checking output schema with multiple ENIs not working",
+			"validation_type": "json"
+		},
+		{
+			"testID": "[ ENIs 1.4 DELETING ONE EIP ]",
+			"path": "/enis-delete",
+			"method": "DELETE",
+			"expected_response": "EIP Record deleted",
+			"expected_responsecode": 200,
+			"failing_message": "Deleting one EIP with 2 alive not working",
+			"validation_type": "delete"
+		},
+		{
+			"testID": "[ ENIs 1.5 GETTING ONLY ONE ]",
+			"path": "/enis-get",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 200,
+			"failing_message": "Getting enis-get after deleting ony one EIP not working",
+			"validation_type": "json"
+		},
+		{
+			"testID": "[ ENIs 1.6 DELETING THE OTHER ENI ]",
+			"path": "/enis-delete",
+			"method": "DELETE",
+			"expected_response": "EIP Record deleted",
+			"expected_responsecode": 200,
+			"failing_message": "Deleting the only missing ENIs not working",
+			"validation_type": "delete"
+		},
+		{
+			"testID": "[ ENIs 1.7 GETTING ZERO EIPS ]",
+			"path": "/enis-get",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 200,
+			"failing_message": "Getting enis-get after deleting the only one missing EIP not working",
+			"validation_type": "null"
+		},
+		{
+			"testID": "[ ENIs 1.8 WRONG METHOD DELETE - /enis-get ]",
+			"path": "/enis-get",
+			"method": "DELETE",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method DELETE against /enis-get not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ ENIs 1.9 WRONG METHOD POST - /enis-get ]",
+			"path": "/enis-get",
+			"method": "POST",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method POST against /enis-get not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ ENIs 1.10 WRONG METHOD DELETE - /enis-scan ]",
+			"path": "/enis-scan",
+			"method": "DELETE",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method DELETE against /enis-scan not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ ENIs 1.11 WRONG METHOD POST - /enis-scan ]",
+			"path": "/enis-scan",
+			"method": "POST",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method POST against /enis-scan not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ ENIs 1.12 WRONG METHOD GET - /enis-delete ]",
+			"path": "/enis-delete",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method GET against /enis-delete not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ ENIs 1.13 WRONG METHOD POST - /enis-delete ]",
+			"path": "/enis-delete",
+			"method": "POST",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method POST against /enis-delete not working",
+			"validation_type": "method"
+		}
+	]
+}

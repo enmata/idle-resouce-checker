@@ -1,0 +1,52 @@
+{
+	"type": "object",
+	"properties": {
+		"eips": {
+			"type": "array",
+			"items": {
+				"oneOf": [{
+					"type": "null"
+				},
+					{
+						"$ref": "#/$defs/elbs_def"
+					}
+				]
+			}
+		}
+	},
+	"$defs": {
+		"type": "object",
+		"required": [
+			"tg_arn",
+			"available_from",
+			"lb_name",
+			"account",
+			"region",
+			"arn",
+			"type"
+		],
+		"properties": {
+			"tg_arn": {
+				"type": "string"
+			},
+			"available_from": {
+				"type": "string"
+			},
+			"lb_name": {
+				"type": "string"
+			},
+			"account": {
+				"type": "string"
+			},
+			"region": {
+				"type": "string"
+			},
+			"arn": {
+				"type": "string"
+			},
+			"type": {
+				"type": "string"
+			}
+		}
+	}
+}

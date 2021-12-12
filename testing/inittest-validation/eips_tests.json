@@ -1,0 +1,121 @@
+{
+	"ToRun": [
+		{
+			"testID": "[ EIPs 1.1 EMPTY DB ]",
+			"path": "/eips-get",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 200,
+			"failing_message": "Initial GET eips-get from clean status not working",
+			"validation_type": "null"
+		},
+		{
+			"testID": "[ EIPs 1.2 SCAN EIPs ]",
+			"path": "/eips-scan",
+			"method": "GET",
+			"expected_response": "EIPs scanned",
+			"expected_responsecode": 200,
+			"failing_message": "Initial GET scan from clean status not working",
+			"validation_type": "string"
+		},
+		{
+			"testID": "[ EIPs 1.3 DETECTING MULTIPLE EIPs ]",
+			"path": "/eips-get",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 200,
+			"failing_message": "Checking output schema with multiple EIPs not working",
+			"validation_type": "json"
+		},
+		{
+			"testID": "[ EIPs 1.4 DELETING ONE EIP ]",
+			"path": "/eips-delete",
+			"method": "DELETE",
+			"expected_response": "EIP Record deleted",
+			"expected_responsecode": 200,
+			"failing_message": "Deleting one EIP with 2 alive not working",
+			"validation_type": "delete"
+		},
+		{
+			"testID": "[ EIPs 1.5 GETTING ONLY ONE ]",
+			"path": "/eips-get",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 200,
+			"failing_message": "Getting eips-get after deleting ony one EIP not working",
+			"validation_type": "json"
+		},
+		{
+			"testID": "[ EIPs 1.6 DELETING THE OTHER EIP ]",
+			"path": "/eips-delete",
+			"method": "DELETE",
+			"expected_response": "EIP Record deleted",
+			"expected_responsecode": 200,
+			"failing_message": "Deleting the only missing EIPs not working",
+			"validation_type": "delete"
+		},
+		{
+			"testID": "[ EIPs 1.7 GETTING ZERO EIPS ]",
+			"path": "/eips-get",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 200,
+			"failing_message": "Getting eips-get after deleting the only one missing EIP not working",
+			"validation_type": "null"
+		},
+		{
+			"testID": "[ EIPs 1.8 WRONG METHOD DELETE - /eips-get ]",
+			"path": "/eips-get",
+			"method": "DELETE",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method DELETE against /eips-get not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ EIPs 1.9 WRONG METHOD POST - /eips-get ]",
+			"path": "/eips-get",
+			"method": "POST",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method POST against /eips-get not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ EIPs 1.10 WRONG METHOD DELETE - /eips-scan ]",
+			"path": "/eips-scan",
+			"method": "DELETE",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method DELETE against /eips-scan not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ EIPs 1.11 WRONG METHOD POST - /eips-scan ]",
+			"path": "/eips-scan",
+			"method": "POST",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method POST against /eips-scan not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ EIPs 1.12 WRONG METHOD GET - /eips-delete ]",
+			"path": "/eips-delete",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method GET against /eips-delete not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ EIPs 1.13 WRONG METHOD POST - /eips-delete ]",
+			"path": "/eips-delete",
+			"method": "POST",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method POST against /eips-delete not working",
+			"validation_type": "method"
+		}
+	]
+}

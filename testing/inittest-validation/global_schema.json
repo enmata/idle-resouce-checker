@@ -1,0 +1,47 @@
+{
+	"type": "object",
+	"properties": {
+		"eips": {
+			"type": "array",
+			"items": {
+				"oneOf" : [
+					{ "type": "null" },
+					{ "$ref": "#/$defs/eips_def" }
+				]
+			}
+		}
+	},
+	"$defs": {
+		"eips_def": {
+			"type": "object",
+			"required": [
+				"available_from",
+				"account",
+				"public_ip",
+				"region",
+				"arn",
+				"type"
+			],
+			"properties": {
+				"available_from": {
+					"type": "string"
+				},
+				"account": {
+					"type": "string"
+				},
+				"public_ip": {
+					"type": "string"
+				},
+				"region": {
+					"type": "string"
+				},
+				"arn": {
+					"type": "string"
+				},
+				"type": {
+					"type": "string"
+				}
+			}
+		}
+	}
+}

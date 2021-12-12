@@ -1,0 +1,4 @@
+{
+  "arn": "arn:aws:elasticloadbalancing:eu-west-1:000000000000:targetgroup/Orphan/47e9ef7c542968c2",
+  "type": "NETWORK-ELB-TargetGroup"
+}

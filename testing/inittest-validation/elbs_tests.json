@@ -1,0 +1,121 @@
+{
+	"ToRun": [
+		{
+			"testID": "[ ELBs 1.1 EMPTY DB ]",
+			"path": "/elbs-get",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 200,
+			"failing_message": "Initial GET enis-get from clean status not working",
+			"validation_type": "null"
+		},
+		{
+			"testID": "[ ELBs 1.2 SCAN ELBs ]",
+			"path": "/elbs-scan",
+			"method": "GET",
+			"expected_response": "ELBs scanned",
+			"expected_responsecode": 200,
+			"failing_message": "Initial GET scan from clean status not working",
+			"validation_type": "string"
+		},
+		{
+			"testID": "[ ELBs 1.3 DETECTING MULTIPLE ELBs ]",
+			"path": "/elbs-get",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 200,
+			"failing_message": "Checking output schema with multiple ELBs not working",
+			"validation_type": "json"
+		},
+		{
+			"testID": "[ ELBs 1.4 DELETING ONE EIP ]",
+			"path": "/elbs-delete",
+			"method": "DELETE",
+			"expected_response": "EIP Record deleted",
+			"expected_responsecode": 200,
+			"failing_message": "Deleting one EIP with 2 alive not working",
+			"validation_type": "delete"
+		},
+		{
+			"testID": "[ ELBs 1.5 GETTING ONLY ONE ]",
+			"path": "/elbs-get",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 200,
+			"failing_message": "Getting enis-get after deleting ony one EIP not working",
+			"validation_type": "json"
+		},
+		{
+			"testID": "[ ELBs 1.6 DELETING THE OTHER ENI ]",
+			"path": "/elbs-delete",
+			"method": "DELETE",
+			"expected_response": "EIP Record deleted",
+			"expected_responsecode": 200,
+			"failing_message": "Deleting the only missing ELBs not working",
+			"validation_type": "delete"
+		},
+		{
+			"testID": "[ ELBs 1.7 GETTING ZERO EIPS ]",
+			"path": "/elbs-get",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 200,
+			"failing_message": "Getting enis-get after deleting the only one missing EIP not working",
+			"validation_type": "null"
+		},
+		{
+			"testID": "[ ELBs 1.8 WRONG METHOD DELETE - /elbs-get ]",
+			"path": "/elbs-get",
+			"method": "DELETE",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method DELETE against /elbs-get not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ ELBs 1.9 WRONG METHOD POST - /elbs-get ]",
+			"path": "/elbs-get",
+			"method": "POST",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method POST against /elbs-get not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ ELBs 1.10 WRONG METHOD DELETE - /enis-scan ]",
+			"path": "/elbs-scan",
+			"method": "DELETE",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method DELETE against /enis-scan not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ ELBs 1.11 WRONG METHOD POST - /enis-scan ]",
+			"path": "/elbs-scan",
+			"method": "POST",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method POST against /enis-scan not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ ELBs 1.12 WRONG METHOD GET - /elbs-delete ]",
+			"path": "/elbs-delete",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method GET against /elbs-delete not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ ELBs 1.13 WRONG METHOD POST - /elbs-delete ]",
+			"path": "/elbs-delete",
+			"method": "POST",
+			"expected_response": [],
+			"expected_responsecode": 403,
+			"failing_message": "Using wrong method POST against /elbs-delete not working",
+			"validation_type": "method"
+		}
+	]
+}

@@ -1,0 +1,5 @@
+{
+  "arn": "arn:aws:elasticloadbalancing:eu-west-1:000000000000:loadbalancer/ELBClassic-ToDelete",
+  "lb_name": "ELBClassic-ToDelete",
+  "type": "NETWORK-ELB-ClassicLB"
+}

@@ -1,0 +1,72 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "version" : "2022-02-01T17:35:56Z",
+    "title" : "resource-cleaner"
+  },
+  "host" : "omcgkruj0g.execute-api.eu-west-1.amazonaws.com",
+  "basePath" : "/resource-cleaner",
+  "schemes" : [ "https" ],
+  "paths" : {
+    "/eips-delete" : {
+      "delete" : {
+        "responses" : { }
+      }
+    },
+    "/eips-get" : {
+      "get" : {
+        "responses" : { }
+      }
+    },
+    "/eips-scan" : {
+      "get" : {
+        "responses" : { }
+      }
+    },
+    "/elbs-delete" : {
+      "delete" : {
+        "responses" : { }
+      }
+    },
+    "/elbs-get" : {
+      "get" : {
+        "responses" : { }
+      }
+    },
+    "/elbs-scan" : {
+      "get" : {
+        "responses" : { }
+      }
+    },
+    "/enis-delete" : {
+      "delete" : {
+        "responses" : { }
+      }
+    },
+    "/enis-get" : {
+      "get" : {
+        "responses" : { }
+      }
+    },
+    "/enis-scan" : {
+      "get" : {
+        "responses" : { }
+      }
+    },
+    "/global-delete" : {
+      "delete" : {
+        "responses" : { }
+      }
+    },
+    "/global-get" : {
+      "get" : {
+        "responses" : { }
+      }
+    },
+    "/global-scan" : {
+      "get" : {
+        "responses" : { }
+      }
+    }
+  }
+}

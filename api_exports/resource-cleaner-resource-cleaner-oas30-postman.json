@@ -1,0 +1,54 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "resource-cleaner",
+    "version" : "2022-02-01T17:35:56Z"
+  },
+  "servers" : [ {
+    "url" : "https://omcgkruj0g.execute-api.eu-west-1.amazonaws.com/{basePath}",
+    "variables" : {
+      "basePath" : {
+        "default" : "/resource-cleaner"
+      }
+    }
+  } ],
+  "paths" : {
+    "/global-get" : {
+      "get" : { }
+    },
+    "/enis-scan" : {
+      "get" : { }
+    },
+    "/enis-get" : {
+      "get" : { }
+    },
+    "/eips-get" : {
+      "get" : { }
+    },
+    "/global-delete" : {
+      "delete" : { }
+    },
+    "/enis-delete" : {
+      "delete" : { }
+    },
+    "/elbs-scan" : {
+      "get" : { }
+    },
+    "/eips-scan" : {
+      "get" : { }
+    },
+    "/global-scan" : {
+      "get" : { }
+    },
+    "/elbs-delete" : {
+      "delete" : { }
+    },
+    "/elbs-get" : {
+      "get" : { }
+    },
+    "/eips-delete" : {
+      "delete" : { }
+    }
+  },
+  "components" : { }
+}

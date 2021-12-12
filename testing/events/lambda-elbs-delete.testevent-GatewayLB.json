@@ -1,0 +1,5 @@
+{
+  "arn": "arn:aws:elasticloadbalancing:eu-west-1:000000000000:loadbalancer/gwy/GWLBdasdas/6a2e1e93b211a3e4",
+  "tg_arn": "arn:aws:elasticloadbalancing:eu-west-1:000000000000:targetgroup/GWTG/00d425733b3657bd3b",
+  "type" : "NETWORK-ELB-GatewayLB"
+}

@@ -1,0 +1,1379 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  AWS CloudFormation Template to create Idle resources scanner with DynamoDB,
+  Lambda, API Gateway, Roles and permissions
+Resources:
+  DynamoDBTable:
+    Type: 'AWS::DynamoDB::Table'
+    Properties:
+      TableName: resources
+      AttributeDefinitions:
+        - AttributeName: arn
+          AttributeType: S
+        - AttributeName: type
+          AttributeType: S
+      KeySchema:
+        - AttributeName: arn
+          KeyType: HASH
+        - AttributeName: type
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  LambdaEIPsGet:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: idle-resource-checker-lambda_eips-get
+      Handler: lambda-eips-get.lambda_handler
+      Runtime: python3.9
+      ReservedConcurrentExecutions: 1
+      Code:
+        ZipFile: |
+          import json
+          def handler(event, context) :
+            print("Event: %s" % json.dumps(event))
+      Role: !GetAtt
+        - RoleLambdaEIPsGet
+        - Arn
+      Timeout: '30'
+    DependsOn:
+      - RoleLambdaEIPsGet
+  LambdaEIPsScan:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: idle-resource-checker-lambda_eips-scan
+      Handler: lambda-eips-scan.lambda_handler
+      Runtime: python3.9
+      ReservedConcurrentExecutions: 1
+      Code:
+        ZipFile: |
+          import json
+          def handler(event, context) :
+            print("Event: %s" % json.dumps(event))
+      Role: !GetAtt
+        - RoleLambdaEIPsScan
+        - Arn
+      Timeout: '30'
+    DependsOn:
+      - RoleLambdaEIPsScan
+  LambdaEIPsDelete:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: idle-resource-checker-lambda_eips-delete
+      Handler: lambda-eips-delete.lambda_handler
+      Runtime: python3.9
+      ReservedConcurrentExecutions: 1
+      Code:
+        ZipFile: |
+          import json
+          def handler(event, context) :
+            print("Event: %s" % json.dumps(event))
+      Role: !GetAtt
+        - RoleLambdaEIPsDelete
+        - Arn
+      Timeout: '30'
+    DependsOn:
+      - RoleLambdaEIPsDelete
+  LambdaELBsGet:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: idle-resource-checker-lambda_elbs-get
+      Handler: lambda-elbs-get.lambda_handler
+      Runtime: python3.9
+      ReservedConcurrentExecutions: 1
+      Code:
+        ZipFile: |
+          import json
+          def handler(event, context) :
+            print("Event: %s" % json.dumps(event))
+      Role: !GetAtt
+        - RoleLambdaELBsGet
+        - Arn
+      Timeout: '30'
+    DependsOn:
+      - RoleLambdaELBsGet
+  LambdaELBsScan:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: idle-resource-checker-lambda_elbs-scan
+      Handler: lambda-elbs-scan.lambda_handler
+      Runtime: python3.9
+      ReservedConcurrentExecutions: 1
+      Code:
+        ZipFile: |
+          import json
+          def handler(event, context) :
+            print("Event: %s" % json.dumps(event))
+      Role: !GetAtt
+        - RoleLambdaELBsScan
+        - Arn
+      Timeout: '30'
+    DependsOn:
+      - RoleLambdaELBsScan
+  LambdaELBsDelete:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: idle-resource-checker-lambda_elbs-delete
+      Handler: lambda-elbs-delete.lambda_handler
+      Runtime: python3.9
+      ReservedConcurrentExecutions: 1
+      Code:
+        ZipFile: |
+          import json
+          def handler(event, context) :
+            print("Event: %s" % json.dumps(event))
+      Role: !GetAtt
+        - RoleLambdaELBsDelete
+        - Arn
+      Timeout: '30'
+    DependsOn:
+      - RoleLambdaELBsDelete
+  LambdaENIsGet:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: idle-resource-checker-lambda_enis-get
+      Handler: lambda-enis-get.lambda_handler
+      Runtime: python3.9
+      ReservedConcurrentExecutions: 1
+      Code:
+        ZipFile: |
+          import json
+          def handler(event, context) :
+            print("Event: %s" % json.dumps(event))
+      Role: !GetAtt
+        - RoleLambdaENIsGet
+        - Arn
+      Timeout: '30'
+    DependsOn:
+      - RoleLambdaENIsGet
+  LambdaENIsScan:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: idle-resource-checker-lambda_enis-scan
+      Handler: lambda-enis-scan.lambda_handler
+      Runtime: python3.9
+      ReservedConcurrentExecutions: 1
+      Code:
+        ZipFile: |
+          import json
+          def handler(event, context) :
+            print("Event: %s" % json.dumps(event))
+      Role: !GetAtt
+        - RoleLambdaENIsScan
+        - Arn
+      Timeout: '30'
+    DependsOn:
+      - RoleLambdaENIsScan
+  LambdaENIsDelete:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: idle-resource-checker-lambda_enis-delete
+      Handler: lambda-enis-delete.lambda_handler
+      Runtime: python3.9
+      ReservedConcurrentExecutions: 1
+      Code:
+        ZipFile: |
+          import json
+          def handler(event, context) :
+            print("Event: %s" % json.dumps(event))
+      Role: !GetAtt
+        - RoleLambdaENIsDelete
+        - Arn
+      Timeout: '30'
+    DependsOn:
+      - RoleLambdaENIsDelete
+  LambdaGlobalGet:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: idle-resource-checker-lambda_global-get
+      Handler: lambda-global-get.lambda_handler
+      Runtime: python3.9
+      ReservedConcurrentExecutions: 1
+      Code:
+        ZipFile: |
+          import json
+          def handler(event, context) :
+            print("Event: %s" % json.dumps(event))
+      Role: !GetAtt
+        - RoleLambdaGlobalGet
+        - Arn
+      Timeout: '30'
+    DependsOn:
+      - RoleLambdaGlobalGet
+  LambdaGlobalScan:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: idle-resource-checker-lambda_global-scan
+      Handler: lambda-global-scan.lambda_handler
+      Runtime: python3.9
+      ReservedConcurrentExecutions: 1
+      Code:
+        ZipFile: |
+          import json
+          def handler(event, context) :
+            print("Event: %s" % json.dumps(event))
+      Role: !GetAtt
+        - RoleLambdaGlobalScan
+        - Arn
+      Timeout: '30'
+    DependsOn:
+      - RoleLambdaGlobalScan
+  LambdaGlobalDelete:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: idle-resource-checker-lambda_global-delete
+      Handler: lambda-global-delete.lambda_handler
+      Runtime: python3.9
+      ReservedConcurrentExecutions: 1
+      Code:
+        ZipFile: |
+          import json
+          def handler(event, context) :
+            print("Event: %s" % json.dumps(event))
+      Role: !GetAtt
+        - RoleLambdaGlobalDelete
+        - Arn
+      Timeout: '30'
+    DependsOn:
+      - RoleLambdaGlobalDelete
+  RoleLambdaEIPsGet:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: idle-resource-checker-lambda-role_eips-get
+      Policies:
+        - PolicyName: idle-resource-checker-lambda-policy_loggingGroups
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - 'arn:aws:logs:*:*:*'
+                Effect: Allow
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+  RoleLambdaEIPsScan:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: idle-resource-checker-lambda-role_eips-scan
+      Policies:
+        - PolicyName: idle-resource-checker-lambda-policy_loggingGroups
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - 'arn:aws:logs:*:*:*'
+                Effect: Allow
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+  RoleLambdaEIPsDelete:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: idle-resource-checker-lambda-role_eips-delete
+      Policies:
+        - PolicyName: idle-resource-checker-lambda-policy_loggingGroups
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - 'arn:aws:logs:*:*:*'
+                Effect: Allow
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+  RoleLambdaELBsGet:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: idle-resource-checker-lambda-role_elbs-get
+      Policies:
+        - PolicyName: idle-resource-checker-lambda-policy_loggingGroups
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - 'arn:aws:logs:*:*:*'
+                Effect: Allow
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+  RoleLambdaELBsScan:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: idle-resource-checker-lambda-role_elbs-scan
+      Policies:
+        - PolicyName: idle-resource-checker-lambda-policy_loggingGroups
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - 'arn:aws:logs:*:*:*'
+                Effect: Allow
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+  RoleLambdaELBsDelete:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: idle-resource-checker-lambda-role_elbs-delete
+      Policies:
+        - PolicyName: idle-resource-checker-lambda-policy_loggingGroups
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - 'arn:aws:logs:*:*:*'
+                Effect: Allow
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+  RoleLambdaENIsGet:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: idle-resource-checker-lambda-role_enis-get
+      Policies:
+        - PolicyName: idle-resource-checker-lambda-policy_loggingGroups
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - 'arn:aws:logs:*:*:*'
+                Effect: Allow
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+  RoleLambdaENIsScan:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: idle-resource-checker-lambda-role_enis-scan
+      Policies:
+        - PolicyName: idle-resource-checker-lambda-policy_loggingGroups
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - 'arn:aws:logs:*:*:*'
+                Effect: Allow
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+  RoleLambdaENIsDelete:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: idle-resource-checker-lambda-role_enis-delete
+      Policies:
+        - PolicyName: idle-resource-checker-lambda-policy_loggingGroups
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - 'arn:aws:logs:*:*:*'
+                Effect: Allow
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+  RoleLambdaGlobalGet:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: idle-resource-checker-lambda-role_global-get
+      Policies:
+        - PolicyName: idle-resource-checker-lambda-policy_loggingGroups
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - 'arn:aws:logs:*:*:*'
+                Effect: Allow
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+  RoleLambdaGlobalScan:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: idle-resource-checker-lambda-role_global-scan
+      Policies:
+        - PolicyName: idle-resource-checker-lambda-policy_loggingGroups
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - 'arn:aws:logs:*:*:*'
+                Effect: Allow
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+  RoleLambdaGlobalDelete:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: idle-resource-checker-lambda-role_global-delete
+      Policies:
+        - PolicyName: idle-resource-checker-lambda-policy_loggingGroups
+          PolicyDocument:
+            Version: 2012-10-17
+            Statement:
+              - Action:
+                  - 'logs:CreateLogGroup'
+                  - 'logs:CreateLogStream'
+                  - 'logs:PutLogEvents'
+                Resource:
+                  - 'arn:aws:logs:*:*:*'
+                Effect: Allow
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Action:
+              - 'sts:AssumeRole'
+            Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+  PolicyDynamoRO:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: idle-resource-checker-dynamodb-policy_read
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'dynamodb:GetItem'
+              - 'dynamodb:Scan'
+            Resource: !GetAtt
+              - DynamoDBTable
+              - Arn
+      Roles:
+        - !Ref RoleLambdaEIPsGet
+        - !Ref RoleLambdaELBsGet
+        - !Ref RoleLambdaENIsGet
+        - !Ref RoleLambdaGlobalGet
+        - !Ref RoleLambdaEIPsScan
+        - !Ref RoleLambdaEIPsDelete
+        - !Ref RoleLambdaELBsScan
+        - !Ref RoleLambdaELBsDelete
+        - !Ref RoleLambdaENIsScan
+        - !Ref RoleLambdaENIsDelete
+        - !Ref RoleLambdaGlobalGet
+        - !Ref RoleLambdaGlobalScan
+        - !Ref RoleLambdaGlobalDelete
+  PolicyDynamoRW:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: idle-resource-checker-dynamodb-policy_readwrite
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'dynamodb:PutItem'
+              - 'dynamodb:DeleteItem'
+              - 'dynamodb:GetItem'
+              - 'dynamodb:Scan'
+            Resource: !GetAtt
+              - DynamoDBTable
+              - Arn
+      Roles:
+        - !Ref RoleLambdaEIPsScan
+        - !Ref RoleLambdaEIPsDelete
+        - !Ref RoleLambdaELBsScan
+        - !Ref RoleLambdaELBsDelete
+        - !Ref RoleLambdaENIsScan
+        - !Ref RoleLambdaENIsDelete
+        - !Ref RoleLambdaGlobalScan
+        - !Ref RoleLambdaGlobalDelete
+  PolicyDynamoRWCD:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: idle-resource-checker-dynamodb-policy_readwritecreateDelete
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'dynamodb:PutItem'
+              - 'dynamodb:DeleteItem'
+              - 'dynamodb:GetItem'
+              - 'dynamodb:Scan'
+              - 'dynamodb:DeleteTable'
+              - 'dynamodb:CreateTable'
+              - 'dynamodb:DescribeTable'
+              - 'dynamodb:UpdateGlobalTableSettings'
+            Resource: !GetAtt
+              - DynamoDBTable
+              - Arn
+      Roles:
+        - !Ref RoleLambdaGlobalDelete
+  PolicyEIPsReadAccess:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: idle-resource-checker-lambda-policy_eips-read
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: PolicyEIPsReadAccess
+            Effect: Allow
+            Action:
+              - 'ec2:DescribeAddresses'
+              - 'ec2:DescribeNetworkInterfaces'
+            Resource: '*'
+      Roles:
+        - !Ref RoleLambdaEIPsScan
+  PolicyEIPsWriteAccess:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: idle-resource-checker-lambda-policy_eips-write
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: PolicyEIPsWriteAccess
+            Effect: Allow
+            Action: 'ec2:ReleaseAddress'
+            Resource: '*'
+      Roles:
+        - !Ref RoleLambdaEIPsDelete
+  PolicyELBsReadAccess:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: idle-resource-checker-lambda-policy_elbs-read
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: ELBsReadAccess
+            Effect: Allow
+            Action:
+              - 'elasticloadbalancing:DescribeTargetGroups'
+              - 'elasticloadbalancing:DescribeTargetHealth'
+              - 'elasticloadbalancing:DescribeLoadBalancers'
+            Resource: '*'
+      Roles:
+        - !Ref RoleLambdaELBsScan
+  PolicyELBsWriteAccess:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: idle-resource-checker-lambda-policy_elbs-write
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: ELBsWriteAccess
+            Effect: Allow
+            Action:
+              - 'elasticloadbalancing:DeleteLoadBalancer'
+              - 'elasticloadbalancing:DeleteTargetGroup'
+            Resource: '*'
+      Roles:
+        - !Ref RoleLambdaELBsDelete
+  PolicyENIsReadAccess:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: idle-resource-checker-lambda-policy_enis-read
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: ENIsReadAccess
+            Effect: Allow
+            Action: 'ec2:DescribeNetworkInterfaces'
+            Resource: '*'
+      Roles:
+        - !Ref RoleLambdaENIsScan
+  PolicyENIsWriteAccess:
+    Type: 'AWS::IAM::Policy'
+    Properties:
+      PolicyName: idle-resource-checker-lambda-policy_enis-write
+      PolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Sid: ENIsWriteAccess
+            Effect: Allow
+            Action: 'ec2:DeleteNetworkInterface'
+            Resource: '*'
+      Roles:
+        - !Ref RoleLambdaENIsDelete
+  APIGatewayRestAPI:
+    Type: 'AWS::ApiGateway::RestApi'
+    Properties:
+      Name: ResourceCleanerRestAPI
+  APIGatewayRestAPIDeployment:
+    Type: 'AWS::ApiGateway::Deployment'
+    DependsOn:
+      - APIGatewayRestAPIMethodEIPGET
+      - APIGatewayRestAPIMethodEIPDELETE
+      - APIGatewayRestAPIMethodELBGET
+      - APIGatewayRestAPIMethodELBDELETE
+      - APIGatewayRestAPIMethodENIGET
+    Properties:
+      RestApiId: !Ref APIGatewayRestAPI
+      StageName: resource-cleaner
+  APIGatewayPathEIP:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref APIGatewayRestAPI
+      ParentId: !GetAtt
+        - APIGatewayRestAPI
+        - RootResourceId
+      PathPart: eips-get
+  APIGatewayRestAPIMethodEIPGET:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      RequestParameters:
+        method.request.path.action: true
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        RequestParameters:
+          integration.request.path.action: method.request.path.action
+        Uri: !Sub
+          - >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
+          - lambdaArn: !GetAtt
+              - LambdaEIPsGet
+              - Arn
+        CacheKeyParameters:
+          - integration.request.path.action
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            StatusCode: '200'
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: '''*'''
+          StatusCode: '200'
+        - StatusCode: '500'
+      ResourceId: !Ref APIGatewayPathEIP
+      RestApiId: !Ref APIGatewayRestAPI
+  APIGatewayPathEIPDelete:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref APIGatewayRestAPI
+      ParentId: !GetAtt
+        - APIGatewayRestAPI
+        - RootResourceId
+      PathPart: eips-delete
+  APIGatewayRestAPIMethodEIPDELETE:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: DELETE
+      RequestParameters:
+        method.request.path.action: true
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        RequestParameters:
+          integration.request.path.action: method.request.path.action
+        Uri: !Sub
+          - >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
+          - lambdaArn: !GetAtt
+              - LambdaEIPsDelete
+              - Arn
+        CacheKeyParameters:
+          - method.request.path.action
+      ResourceId: !Ref APIGatewayPathEIPDelete
+      RestApiId: !Ref APIGatewayRestAPI
+  APIGatewayPathEIPScan:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref APIGatewayRestAPI
+      ParentId: !GetAtt
+        - APIGatewayRestAPI
+        - RootResourceId
+      PathPart: eips-scan
+  APIGatewayRestAPIMethodEIPScanGET:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      RequestParameters:
+        method.request.path.action: true
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        RequestParameters:
+          integration.request.path.action: method.request.path.action
+        Uri: !Sub
+          - >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
+          - lambdaArn: !GetAtt
+              - LambdaEIPsScan
+              - Arn
+        CacheKeyParameters:
+          - method.request.path.action
+      ResourceId: !Ref APIGatewayPathEIPScan
+      RestApiId: !Ref APIGatewayRestAPI
+  APIGatewayRestAPIMethodEIPGETPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !GetAtt
+        - LambdaEIPsGet
+        - Arn
+      Principal: apigateway.amazonaws.com
+  APIGatewayRestAPIMethodEIPDELETEPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !GetAtt
+        - LambdaEIPsDelete
+        - Arn
+      Principal: apigateway.amazonaws.com
+  APIGatewayRestAPIMethodEIPScanGETPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !GetAtt
+        - LambdaEIPsScan
+        - Arn
+      Principal: apigateway.amazonaws.com
+  APIGatewayPathELB:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref APIGatewayRestAPI
+      ParentId: !GetAtt
+        - APIGatewayRestAPI
+        - RootResourceId
+      PathPart: elbs-get
+  APIGatewayRestAPIMethodELBGET:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      RequestParameters:
+        method.request.path.action: true
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        RequestParameters:
+          integration.request.path.action: method.request.path.action
+        Uri: !Sub
+          - >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
+          - lambdaArn: !GetAtt
+              - LambdaELBsGet
+              - Arn
+        CacheKeyParameters:
+          - integration.request.path.action
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            StatusCode: '200'
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: '''*'''
+          StatusCode: '200'
+        - StatusCode: '500'
+      ResourceId: !Ref APIGatewayPathELB
+      RestApiId: !Ref APIGatewayRestAPI
+  APIGatewayPathELBDelete:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref APIGatewayRestAPI
+      ParentId: !GetAtt
+        - APIGatewayRestAPI
+        - RootResourceId
+      PathPart: elbs-delete
+  APIGatewayRestAPIMethodELBDELETE:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: DELETE
+      RequestParameters:
+        method.request.path.action: true
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        RequestParameters:
+          integration.request.path.action: method.request.path.action
+        Uri: !Sub
+          - >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
+          - lambdaArn: !GetAtt
+              - LambdaELBsDelete
+              - Arn
+        CacheKeyParameters:
+          - method.request.path.action
+      ResourceId: !Ref APIGatewayPathELBDelete
+      RestApiId: !Ref APIGatewayRestAPI
+  APIGatewayPathELBScan:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref APIGatewayRestAPI
+      ParentId: !GetAtt
+        - APIGatewayRestAPI
+        - RootResourceId
+      PathPart: elbs-scan
+  APIGatewayRestAPIMethodELBScanGET:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      RequestParameters:
+        method.request.path.action: true
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        RequestParameters:
+          integration.request.path.action: method.request.path.action
+        Uri: !Sub
+          - >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
+          - lambdaArn: !GetAtt
+              - LambdaELBsScan
+              - Arn
+        CacheKeyParameters:
+          - integration.request.path.action
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            StatusCode: '200'
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: '''*'''
+          StatusCode: '200'
+        - StatusCode: '500'
+      ResourceId: !Ref APIGatewayPathELBScan
+      RestApiId: !Ref APIGatewayRestAPI
+  APIGatewayRestAPIMethodELBGETPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !GetAtt
+        - LambdaELBsGet
+        - Arn
+      Principal: apigateway.amazonaws.com
+  APIGatewayRestAPIMethodELBELETEPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !GetAtt
+        - LambdaELBsDelete
+        - Arn
+      Principal: apigateway.amazonaws.com
+  APIGatewayRestAPIMethodELBScanGETPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !GetAtt
+        - LambdaELBsScan
+        - Arn
+      Principal: apigateway.amazonaws.com
+  APIGatewayPathENI:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref APIGatewayRestAPI
+      ParentId: !GetAtt
+        - APIGatewayRestAPI
+        - RootResourceId
+      PathPart: enis-get
+  APIGatewayRestAPIMethodENIGET:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      RequestParameters:
+        method.request.path.action: true
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        RequestParameters:
+          integration.request.path.action: method.request.path.action
+        Uri: !Sub
+          - >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
+          - lambdaArn: !GetAtt
+              - LambdaENIsGet
+              - Arn
+        CacheKeyParameters:
+          - integration.request.path.action
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            StatusCode: '200'
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: '''*'''
+          StatusCode: '200'
+        - StatusCode: '500'
+      ResourceId: !Ref APIGatewayPathENI
+      RestApiId: !Ref APIGatewayRestAPI
+  APIGatewayPathENIDelete:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref APIGatewayRestAPI
+      ParentId: !GetAtt
+        - APIGatewayRestAPI
+        - RootResourceId
+      PathPart: enis-delete
+  APIGatewayRestAPIMethodENIDELETE:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: DELETE
+      RequestParameters:
+        method.request.path.action: true
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        RequestParameters:
+          integration.request.path.action: method.request.path.action
+        Uri: !Sub
+          - >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
+          - lambdaArn: !GetAtt
+              - LambdaENIsDelete
+              - Arn
+        CacheKeyParameters:
+          - method.request.path.action
+      ResourceId: !Ref APIGatewayPathENIDelete
+      RestApiId: !Ref APIGatewayRestAPI
+  APIGatewayPathENIScan:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref APIGatewayRestAPI
+      ParentId: !GetAtt
+        - APIGatewayRestAPI
+        - RootResourceId
+      PathPart: enis-scan
+  APIGatewayRestAPIMethodENIScanGET:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      RequestParameters:
+        method.request.path.action: true
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        RequestParameters:
+          integration.request.path.action: method.request.path.action
+        Uri: !Sub
+          - >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
+          - lambdaArn: !GetAtt
+              - LambdaENIsScan
+              - Arn
+        CacheKeyParameters:
+          - integration.request.path.action
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            StatusCode: '200'
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: '''*'''
+          StatusCode: '200'
+        - StatusCode: '500'
+      ResourceId: !Ref APIGatewayPathENIScan
+      RestApiId: !Ref APIGatewayRestAPI
+  APIGatewayRestAPIMethodENIGETPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !GetAtt
+        - LambdaENIsGet
+        - Arn
+      Principal: apigateway.amazonaws.com
+  APIGatewayRestAPIMethodENIDELETEPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !GetAtt
+        - LambdaENIsDelete
+        - Arn
+      Principal: apigateway.amazonaws.com
+  APIGatewayRestAPIMethodENIScanGETPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !GetAtt
+        - LambdaENIsScan
+        - Arn
+      Principal: apigateway.amazonaws.com
+  APIGatewayPathGlobalGet:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref APIGatewayRestAPI
+      ParentId: !GetAtt
+        - APIGatewayRestAPI
+        - RootResourceId
+      PathPart: global-get
+  APIGatewayPathGlobalScan:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref APIGatewayRestAPI
+      ParentId: !GetAtt
+        - APIGatewayRestAPI
+        - RootResourceId
+      PathPart: global-scan
+  APIGatewayPathGlobalDelete:
+    Type: 'AWS::ApiGateway::Resource'
+    Properties:
+      RestApiId: !Ref APIGatewayRestAPI
+      ParentId: !GetAtt
+        - APIGatewayRestAPI
+        - RootResourceId
+      PathPart: global-delete
+  APIGatewayRestAPIMethodGlobalGET:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      RequestParameters:
+        method.request.path.action: true
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        RequestParameters:
+          integration.request.path.action: method.request.path.action
+        Uri: !Sub
+          - >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
+          - lambdaArn: !GetAtt
+              - LambdaGlobalGet
+              - Arn
+        CacheKeyParameters:
+          - integration.request.path.action
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            StatusCode: '200'
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: '''*'''
+          StatusCode: '200'
+        - StatusCode: '500'
+      ResourceId: !Ref APIGatewayPathGlobalGet
+      RestApiId: !Ref APIGatewayRestAPI
+  APIGatewayRestAPIMethodGlobalGETPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !GetAtt
+        - LambdaGlobalGet
+        - Arn
+      Principal: apigateway.amazonaws.com
+  APIGatewayRestAPIMethodGlobalSCAN:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: GET
+      RequestParameters:
+        method.request.path.action: true
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        RequestParameters:
+          integration.request.path.action: method.request.path.action
+        Uri: !Sub
+          - >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
+          - lambdaArn: !GetAtt
+              - LambdaGlobalScan
+              - Arn
+        CacheKeyParameters:
+          - integration.request.path.action
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            StatusCode: '200'
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: '''*'''
+          StatusCode: '200'
+        - StatusCode: '500'
+      ResourceId: !Ref APIGatewayPathGlobalScan
+      RestApiId: !Ref APIGatewayRestAPI
+  APIGatewayRestAPIMethodGlobalSCANPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !GetAtt
+        - LambdaGlobalScan
+        - Arn
+      Principal: apigateway.amazonaws.com
+  APIGatewayRestAPIMethodGlobalDelete:
+    Type: 'AWS::ApiGateway::Method'
+    Properties:
+      AuthorizationType: NONE
+      HttpMethod: DELETE
+      RequestParameters:
+        method.request.path.action: true
+      Integration:
+        IntegrationHttpMethod: POST
+        Type: AWS_PROXY
+        RequestParameters:
+          integration.request.path.action: method.request.path.action
+        Uri: !Sub
+          - >-
+            arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${lambdaArn}/invocations
+          - lambdaArn: !GetAtt
+              - LambdaGlobalDelete
+              - Arn
+        CacheKeyParameters:
+          - integration.request.path.action
+        IntegrationResponses:
+          - ResponseParameters:
+              method.response.header.Access-Control-Allow-Origin: '''*'''
+            StatusCode: '200'
+      MethodResponses:
+        - ResponseModels:
+            application/json: Empty
+          ResponseParameters:
+            method.response.header.Access-Control-Allow-Origin: '''*'''
+          StatusCode: '200'
+        - StatusCode: '500'
+      ResourceId: !Ref APIGatewayPathGlobalDelete
+      RestApiId: !Ref APIGatewayRestAPI
+  APIGatewayRestAPIMethodGlobalDELETEPermission:
+    Type: 'AWS::Lambda::Permission'
+    Properties:
+      Action: 'lambda:InvokeFunction'
+      FunctionName: !GetAtt
+        - LambdaGlobalDelete
+        - Arn
+      Principal: apigateway.amazonaws.com
+Outputs:
+  LambdaEIPsGet:
+    Description: EIPs Get Lambda
+    Value: !GetAtt
+      - LambdaEIPsGet
+      - Arn
+  LambdaEIPsDelete:
+    Description: EIPs Delete Lambda
+    Value: !GetAtt
+      - LambdaEIPsDelete
+      - Arn
+  LambdaEIPsScan:
+    Description: EIPs Delete Lambda
+    Value: !GetAtt
+      - LambdaEIPsScan
+      - Arn
+  LambdaELBsGet:
+    Description: ELBs Get Lambda
+    Value: !GetAtt
+      - LambdaELBsGet
+      - Arn
+  LambdaELBsDelete:
+    Description: ELBs Delete Lambda
+    Value: !GetAtt
+      - LambdaELBsDelete
+      - Arn
+  LambdaELBsScan:
+    Description: ELBs Scan Lambda
+    Value: !GetAtt
+      - LambdaELBsScan
+      - Arn
+  LambdaENIsGet:
+    Description: ENIs Get Lambda
+    Value: !GetAtt
+      - LambdaENIsGet
+      - Arn
+  LambdaENIsDelete:
+    Description: ENIs Delete Lambda
+    Value: !GetAtt
+      - LambdaENIsDelete
+      - Arn
+  LambdaENIsScan:
+    Description: ENIs Scan Lambda
+    Value: !GetAtt
+      - LambdaENIsScan
+      - Arn
+  LambdaGlobalGet:
+    Description: Lambda dumping (dynamodb scan) all DynamoDB contents
+    Value: !GetAtt
+      - LambdaGlobalGet
+      - Arn
+  LambdaGlobalScan:
+    Description: 'Lambda scanning all resources, trigering all *scan lambda functions'
+    Value: !GetAtt
+      - LambdaGlobalScan
+      - Arn
+  LambdaGlobalDelete:
+    Description: Lambda resetting (delete + create) DynamoDB table
+    Value: !GetAtt
+      - LambdaGlobalDelete
+      - Arn
+  APIGatewayRootURL:
+    Description: Root API Gateway URL
+    Value: !Sub >-
+      https://${APIGatewayRestAPI}.execute-api.${AWS::Region}.amazonaws.com/resource-cleaner
+  APIGatewayEIPGetURL:
+    Description: EIP Get API Gateway URL (GET)
+    Value: !Sub >-
+      https://${APIGatewayRestAPI}.execute-api.${AWS::Region}.amazonaws.com/resource-cleaner/eips-get
+  APIGatewayEIPScanURL:
+    Description: EIP Scan API Gateway URL (GET)
+    Value: !Sub >-
+      https://${APIGatewayRestAPI}.execute-api.${AWS::Region}.amazonaws.com/resource-cleaner/eips-scan
+  APIGatewayEIPDeleteURL:
+    Description: EIP Delete API Gateway URL (DELETE)
+    Value: !Sub >-
+      https://${APIGatewayRestAPI}.execute-api.${AWS::Region}.amazonaws.com/resource-cleaner/eips-delete
+  APIGatewayELBGetURL:
+    Description: ELB Get API Gateway URL (GET)
+    Value: !Sub >-
+      https://${APIGatewayRestAPI}.execute-api.${AWS::Region}.amazonaws.com/resource-cleaner/elbs-get
+  APIGatewayELScanBURL:
+    Description: ELB Scan API Gateway URL (GET)
+    Value: !Sub >-
+      https://${APIGatewayRestAPI}.execute-api.${AWS::Region}.amazonaws.com/resource-cleaner/elbs-scan
+  APIGatewayELBDeleteURL:
+    Description: ELB Delete API Gateway URL (DELETE)
+    Value: !Sub >-
+      https://${APIGatewayRestAPI}.execute-api.${AWS::Region}.amazonaws.com/resource-cleaner/elbs-delete
+  APIGatewayENIGetURL:
+    Description: ENI Get API Gateway URL (GET)
+    Value: !Sub >-
+      https://${APIGatewayRestAPI}.execute-api.${AWS::Region}.amazonaws.com/resource-cleaner/enis-get
+  APIGatewayENIScanURL:
+    Description: ENI Scan API Gateway URL (GET)
+    Value: !Sub >-
+      https://${APIGatewayRestAPI}.execute-api.${AWS::Region}.amazonaws.com/resource-cleaner/enis-scan
+  APIGatewayENIDeleteURL:
+    Description: ENI Delete API Gateway URL (DELETE)
+    Value: !Sub >-
+      https://${APIGatewayRestAPI}.execute-api.${AWS::Region}.amazonaws.com/resource-cleaner/enis-delete
+  APIGatewayGlobalGetURL:
+    Description: Global DynamoDB Get API Gateway URL (GET)
+    Value: !Sub >-
+      https://${APIGatewayRestAPI}.execute-api.${AWS::Region}.amazonaws.com/resource-cleaner/global-get
+  APIGatewayGlobalScanURL:
+    Description: Global DynamoDB Scan API Gateway URL (GET)
+    Value: !Sub >-
+      https://${APIGatewayRestAPI}.execute-api.${AWS::Region}.amazonaws.com/resource-cleaner/global-scan
+  APIGatewayGlobalDeleteURL:
+    Description: Global DynamoDB Delete API Gateway URL (DELETE)
+    Value: !Sub >-
+      https://${APIGatewayRestAPI}.execute-api.${AWS::Region}.amazonaws.com/resource-cleaner/global-delete
+  DynamoDBTable:
+    Description: DynamoDB created table
+    Value: !Select
+      - 1
+      - !Split
+        - /
+        - !GetAtt
+          - DynamoDBTable
+          - Arn

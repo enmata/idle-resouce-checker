@@ -1,0 +1,49 @@
+{
+	"ToRun": [
+		{
+			"testID": "[ GLOBAL 1.1 EMPTY DB ]",
+			"path": "/global-get",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 200,
+			"failing_message": "Initial GET from clean status not working",
+			"validation_type": "null"
+		},
+		{
+			"testID": "[ GLOBAL 1.2 SCAN RESOURCES ]",
+			"path": "/global-scan",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 502,
+			"failing_message": "Initial GET scan from clean status not working",
+			"validation_type": "method"
+		},
+		{
+			"testID": "[ GLOBAL 1.3 DETECTING MULTIPLE RESOURCES ]",
+			"path": "/global-get",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 200,
+			"failing_message": "Checking output schema with multiple resources not working",
+			"validation_type": "json"
+		},
+		{
+			"testID": "[ GLOBAL 1.4 DELETING DYNAMODB TABLE ]",
+			"path": "/global-delete",
+			"method": "DELETE",
+			"expected_response": "DynamoDB Table recreated",
+			"expected_responsecode": 200,
+			"failing_message": "Deleting dynamodb table not working",
+			"validation_type": "delete"
+		},
+		{
+			"testID": "[ GLOBAL 1.5 EMPTY DB ]",
+			"path": "/global-get",
+			"method": "GET",
+			"expected_response": [],
+			"expected_responsecode": 200,
+			"failing_message": "Empty DB after recreating cleaning status",
+			"validation_type": "null"
+		}
+	]
+}

@@ -1,0 +1,63 @@
+{
+	"type": "object",
+	"properties": {
+		"eips": {
+			"type": "array",
+			"items": {
+				"oneOf": [{
+					"type": "null"
+				},
+					{
+						"$ref": "#/$defs/enis_def"
+					}
+				]
+			}
+		}
+	},
+	"$defs": {
+		"enis_def": {
+			"type": "object",
+			"required": [
+				"mac_address",
+				"resource_name",
+				"private_ip",
+				"available_from",
+				"account",
+				"public_ip",
+				"region",
+				"arn",
+				"type"
+			],
+			"properties": {
+				"mac_address": {
+					"type": "string"
+				},
+				"resource_name": {
+					"type": "string"
+				},
+				"private_ip": {
+					"type": "string"
+				},
+				"available_from": {
+					"type": "string"
+				},
+				"account": {
+					"type": "string"
+				},
+				"public_ip": {
+					"type": "string"
+				},
+				"region": {
+					"type": "string"
+				},
+				"arn": {
+					"type": "string"
+				},
+				"type": {
+					"type": "string"
+				}
+			}
+		}
+
+	}
+}
